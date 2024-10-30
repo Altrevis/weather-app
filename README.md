@@ -29,3 +29,7 @@ Ce projet est un site web interactif fournissant des prévisions météo complè
 - **Interface épurée** : Simplicité et intuitivité centrées sur les informations principales.
 
 ---
+
+##  Weather App Trello
+
+- **lien Trello**: https://trello.com/b/Z9J4CJE4/weather-app
