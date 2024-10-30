@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "weather_db";
+$dbname = "Climate_db";
 
 try {
     $conn = new PDO("mysql:host=$servername", $username, $password);
@@ -17,17 +17,14 @@ try {
     // Connexion à la base de données créée
     $conn->exec("USE $dbname");
 
-    // Création de la table weather_data
-    $sql = "CREATE TABLE IF NOT EXISTS weather_data (
+    // Création de la table CLimate_data
+    $sql = "CREATE TABLE IF NOT EXISTS Climate_data (
         id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         temperature FLOAT NOT NULL,
-        city VARCHAR(50) NOT NULL,
-        HourTime TIME NOT NULL,
-        sunshine FLOAT NOT NULL,
-        DatTime DATE NOT NULL
+        sunshine FLOAT NOT NULL
     )";
     $conn->exec($sql);
-    echo "Table 'weather_data' créée avec succès<br>";
+    echo "Table 'Climate_data' créée avec succès<br>";
 } catch (PDOException $e) {
     echo "Erreur : " . $e->getMessage();
 }
