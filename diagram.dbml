@@ -1,0 +1,17 @@
+Table Time_data {
+id int
+HourTime time
+DateTime date
+}
+
+Table Climate_data {
+id int
+temparature float
+sunshine float
+}
+
+Table Location_data {
+id int
+city varchar
+Department varchar
+}
