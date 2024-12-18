@@ -1,0 +1,783 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+a {
+  text-decoration: none;
+}
+
+.box {
+    width: 478px;
+    height: 269px;
+  }
+  
+  .box .group {
+    position: fixed;
+    width: 480px;
+    height: 269px;
+    top: 0;
+    left: 0;
+  }
+  
+  .box .overlap-group {
+    position: relative;
+    width: 478px;
+    height: 269px;
+    background-image: url(./img/index-page.svg);
+    background-size: 100% 100%;
+  }
+  
+  .box .background {
+    position: absolute;
+    width: 478px;
+    height: 269px;
+    top: 0;
+    left: 0;
+  }
+  
+  .box .heading-my {
+    position: absolute;
+    width: 44px;
+    height: 9px;
+    top: 6px;
+    left: 35px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #00050e;
+    font-size: 7.3px;
+    letter-spacing: -0.07px;
+    line-height: 9.3px;
+    white-space: nowrap;
+  }
+  
+  .box .navbar {
+    width: 427px;
+    top: 20px;
+    left: 35px;
+    border-bottom-width: 0.33px;
+    border-bottom-style: solid;
+    border-color: #d0cdcd;
+    position: absolute;
+    height: 13px;
+  }
+  
+  .box .text-wrapper {
+    width: 24px;
+    left: 222px;
+    position: absolute;
+    height: 6px;
+    top: 3px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #666669;
+    font-size: 4.2px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 6px;
+    white-space: nowrap;
+  }
+  
+  .box .div {
+    width: 24px;
+    left: 165px;
+    position: absolute;
+    height: 6px;
+    top: 3px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #666669;
+    font-size: 4.2px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 6px;
+    white-space: nowrap;
+  }
+  
+  .box .text-wrapper-2 {
+    width: 24px;
+    left: 108px;
+    position: absolute;
+    height: 6px;
+    top: 3px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #666669;
+    font-size: 4.2px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 6px;
+    white-space: nowrap;
+  }
+  
+  .box .text-wrapper-3 {
+    width: 19px;
+    left: 278px;
+    position: absolute;
+    height: 6px;
+    top: 3px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #666669;
+    font-size: 4.2px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 6px;
+    white-space: nowrap;
+  }
+  
+  .box .text-wrapper-4 {
+    width: 13px;
+    left: 335px;
+    position: absolute;
+    height: 6px;
+    top: 3px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #666669;
+    font-size: 4.2px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 6px;
+    white-space: nowrap;
+  }
+  
+  .box .text-wrapper-5 {
+    width: 18px;
+    left: 386px;
+    position: absolute;
+    height: 6px;
+    top: 3px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #666669;
+    font-size: 4.2px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 6px;
+    white-space: nowrap;
+  }
+  
+  .box .zone-ville {
+    position: absolute;
+    width: 427px;
+    height: 24px;
+    top: 33px;
+    left: 35px;
+    border-bottom-width: 0.33px;
+    border-bottom-style: solid;
+    border-color: #d0cdcd;
+  }
+  
+  .box .heading {
+    width: 12px;
+    position: absolute;
+    height: 7px;
+    top: 8px;
+    left: 3px;
+    overflow: hidden;
+  }
+  
+  .box .link {
+    position: relative;
+    height: 6px;
+  }
+  
+  .box .text-wrapper-6 {
+    width: 12px;
+    font-size: 5.3px;
+    position: absolute;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #00050e;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .button-add-to-my {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    top: 9px;
+    left: -11px;
+  }
+  
+  .box .text {
+    position: absolute;
+    width: 29px;
+    height: 13px;
+    top: 5px;
+    left: 219px;
+  }
+  
+  .box .element-svg {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    top: 0;
+    left: 0;
+  }
+  
+  .box .div-wrapper {
+    position: absolute;
+    width: 13px;
+    height: 7px;
+    top: 3px;
+    left: 16px;
+  }
+  
+  .box .text-wrapper-7 {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #b21002;
+    font-size: 5.3px;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .text-2 {
+    position: absolute;
+    width: 29px;
+    height: 13px;
+    top: 5px;
+    left: 273px;
+  }
+  
+  .box .text-3 {
+    position: absolute;
+    width: 29px;
+    height: 13px;
+    top: 6px;
+    left: 327px;
+  }
+  
+  .box .text-4 {
+    position: absolute;
+    width: 29px;
+    height: 13px;
+    top: 5px;
+    left: 381px;
+  }
+  
+  .box .text-wrapper-8 {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #1767ce;
+    font-size: 5.3px;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .button-options-for {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 8px;
+    left: 414px;
+  }
+  
+  .box .text-5 {
+    position: absolute;
+    width: 29px;
+    height: 13px;
+    top: 6px;
+    left: 166px;
+  }
+  
+  .box .text-6 {
+    position: absolute;
+    width: 29px;
+    height: 13px;
+    top: 6px;
+    left: 113px;
+  }
+  
+  .box .zone-ville-2 {
+    top: 58px;
+    position: absolute;
+    width: 427px;
+    height: 24px;
+    left: 35px;
+    border-bottom-width: 0.33px;
+    border-bottom-style: solid;
+    border-color: #d0cdcd;
+  }
+  
+  .box .link-wrapper {
+    width: 27px;
+    position: absolute;
+    height: 7px;
+    top: 8px;
+    left: 3px;
+    overflow: hidden;
+  }
+  
+  .box .text-wrapper-9 {
+    width: 27px;
+    font-size: 5.2px;
+    position: absolute;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #00050e;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .text-7 {
+    position: absolute;
+    width: 29px;
+    height: 13px;
+    top: 5px;
+    left: 327px;
+  }
+  
+  .box .text-wrapper-10 {
+    font-size: 5.1px;
+    position: absolute;
+    width: 8px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #1767ce;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .text-8 {
+    position: absolute;
+    width: 29px;
+    height: 13px;
+    top: 5px;
+    left: 113px;
+  }
+  
+  .box .zone-ville-3 {
+    top: 82px;
+    position: absolute;
+    width: 427px;
+    height: 24px;
+    left: 35px;
+    border-bottom-width: 0.33px;
+    border-bottom-style: solid;
+    border-color: #d0cdcd;
+  }
+  
+  .box .heading-2 {
+    width: 19px;
+    position: absolute;
+    height: 7px;
+    top: 8px;
+    left: 3px;
+    overflow: hidden;
+  }
+  
+  .box .text-wrapper-11 {
+    position: absolute;
+    width: 19px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #00050e;
+    font-size: 5.2px;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .text-wrapper-12 {
+    font-size: 5.2px;
+    position: absolute;
+    width: 8px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #1767ce;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .zone-ville-4 {
+    top: 106px;
+    position: absolute;
+    width: 427px;
+    height: 24px;
+    left: 35px;
+    border-bottom-width: 0.33px;
+    border-bottom-style: solid;
+    border-color: #d0cdcd;
+  }
+  
+  .box .heading-3 {
+    position: absolute;
+    width: 15px;
+    height: 7px;
+    top: 8px;
+    left: 3px;
+    overflow: hidden;
+  }
+  
+  .box .text-wrapper-13 {
+    width: 15px;
+    font-size: 5.3px;
+    position: absolute;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #00050e;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .text-wrapper-14 {
+    position: absolute;
+    width: 9px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #b21002;
+    font-size: 5.3px;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .zone-ville-5 {
+    top: 131px;
+    position: absolute;
+    width: 427px;
+    height: 24px;
+    left: 35px;
+    border-bottom-width: 0.33px;
+    border-bottom-style: solid;
+    border-color: #d0cdcd;
+  }
+  
+  .box .text-wrapper-15 {
+    width: 15px;
+    font-size: 5.2px;
+    position: absolute;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #00050e;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .button-type-mto {
+    position: absolute;
+    width: 97px;
+    height: 19px;
+    top: 176px;
+    left: 35px;
+    background-color: #f8f1ff;
+    border-radius: 2.67px;
+    overflow: hidden;
+    border: 0.33px solid;
+    border-color: #dbbffa;
+  }
+  
+  .box .SVG {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 5px;
+    left: 37px;
+  }
+  
+  .box .container {
+    width: 11px;
+    top: 6px;
+    left: 48px;
+    position: absolute;
+    height: 7px;
+    overflow: hidden;
+  }
+  
+  .box .text-wrapper-16 {
+    position: absolute;
+    width: 11px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #2b0b4f;
+    font-size: 5.3px;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .button-type-mto-2 {
+    left: 145px;
+    background-color: #fff2ee;
+    border-color: #ffc7bd;
+    position: absolute;
+    width: 97px;
+    height: 19px;
+    top: 176px;
+    border-radius: 2.67px;
+    overflow: hidden;
+    border: 0.33px solid;
+  }
+  
+  .box .img {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 5px;
+    left: 20px;
+  }
+  
+  .box .container-2 {
+    width: 46px;
+    top: 6px;
+    left: 30px;
+    position: absolute;
+    height: 7px;
+    overflow: hidden;
+  }
+  
+  .box .text-wrapper-17 {
+    position: absolute;
+    width: 46px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #450502;
+    font-size: 5.2px;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .button-type-mto-3 {
+    left: 255px;
+    background-color: #dcfaf5;
+    border-color: #85e6d6;
+    position: absolute;
+    width: 97px;
+    height: 19px;
+    top: 176px;
+    border-radius: 2.67px;
+    overflow: hidden;
+    border: 0.33px solid;
+  }
+  
+  .box .SVG-2 {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 5px;
+    left: 26px;
+  }
+  
+  .box .container-3 {
+    width: 33px;
+    top: 6px;
+    left: 37px;
+    position: absolute;
+    height: 7px;
+    overflow: hidden;
+  }
+  
+  .box .text-wrapper-18 {
+    position: absolute;
+    width: 33px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #022c25;
+    font-size: 5.2px;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .button-type-mto-4 {
+    left: 365px;
+    background-color: #e8f7eb;
+    border-color: #aae4b9;
+    position: absolute;
+    width: 97px;
+    height: 19px;
+    top: 176px;
+    border-radius: 2.67px;
+    overflow: hidden;
+    border: 0.33px solid;
+  }
+  
+  .box .SVG-3 {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 5px;
+    left: 21px;
+  }
+  
+  .box .container-4 {
+    width: 43px;
+    top: 6px;
+    left: 32px;
+    position: absolute;
+    height: 7px;
+    overflow: hidden;
+  }
+  
+  .box .text-wrapper-19 {
+    position: absolute;
+    width: 43px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #052b0e;
+    font-size: 5.2px;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .navbar-2 {
+    width: 78px;
+    top: 3px;
+    left: 384px;
+    position: absolute;
+    height: 13px;
+  }
+  
+  .box .label {
+    position: absolute;
+    width: 35px;
+    height: 14px;
+    top: 0;
+    left: 5px;
+    background-color: #ffffff;
+    border-radius: 2.67px;
+    border: 0.33px solid;
+    border-color: #b2cff5;
+  }
+  
+  .box .SVG-4 {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    top: 4px;
+    left: 6px;
+  }
+  
+  .box .container-5 {
+    width: 17px;
+    top: 3px;
+    left: 12px;
+    position: absolute;
+    height: 7px;
+    overflow: hidden;
+  }
+  
+  .box .text-wrapper-20 {
+    position: absolute;
+    width: 17px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #1767ce;
+    font-size: 5px;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
+  .box .button {
+    all: unset;
+    box-sizing: border-box;
+    position: absolute;
+    width: 33px;
+    height: 14px;
+    top: 0;
+    left: 46px;
+    background-color: #ffffff;
+    border-radius: 2.67px;
+    border: 0.33px solid;
+    border-color: #b2cff5;
+  }
+  
+  .box .container-6 {
+    width: 15px;
+    top: 3px;
+    left: 12px;
+    position: absolute;
+    height: 7px;
+    overflow: hidden;
+  }
+  
+  .box .text-wrapper-21 {
+    position: absolute;
+    width: 15px;
+    height: 6px;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #1767ce;
+    font-size: 5.3px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 7.3px;
+    white-space: nowrap;
+  }
+  
