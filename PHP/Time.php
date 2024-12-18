@@ -9,12 +9,10 @@ try {
     $conn = new PDO("mysql:host=$servername", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Création de la base de données si elle n'existe pas
     $sql = "CREATE DATABASE IF NOT EXISTS $dbname";
     $conn->exec($sql);
     echo "Base de données créée avec succès<br>";
 
-    // Connexion à la base de données créée
     $conn->exec("USE $dbname");
 
     // Création de la table Time_data
@@ -29,6 +27,5 @@ try {
     echo "Erreur : " . $e->getMessage();
 }
 
-// Fermeture de la connexion
 $conn = null;
 ?>
