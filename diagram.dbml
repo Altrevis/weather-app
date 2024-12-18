@@ -1,20 +1,20 @@
-Table Time_data {
+Table Time {
 id int
 HourTime time
 DateTime date
 }
 
-Table Climate_data {
+Table Climate {
 id int
 temparature float
 sunshine float
 }
 
-Table Location_data {
+Table Location {
 id int
 city varchar
 Department varchar
 }
 
-Ref : Location_data.id > Climate_data.id
-Ref : Location_data.id > Time_data.id
+Ref : Location.id > Climate.id
+Ref : Location.id > Time.id
