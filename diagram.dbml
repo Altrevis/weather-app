@@ -1,20 +1,24 @@
+Table Location {
+  ID          int [pk, increment]
+  City        varchar(255)
+  Department  varchar(255)
+  Latitude    float
+  Longitude   float
+}
+
 Table Time {
-id int
-HourTime time
-DateTime date
+  ID        int [pk, increment]
+  HourTime  time
+  DateTime  date
 }
 
 Table Climate {
-id int
-temparature float
-sunshine float
+  ID               int [pk, increment]
+  LocationID       int [ref: > Location.ID]
+  TimeID           int [ref: > Time.ID]
+  Temperature      float
+  Sunshine         float
+  Humidity         float
+  WindSpeed        float
+  WeatherCondition varchar(255)
 }
-
-Table Location {
-id int
-city varchar
-Department varchar
-}
-
-Ref : Location.id > Climate.id
-Ref : Location.id > Time.id
