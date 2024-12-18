@@ -1,11 +1,14 @@
-from flask import Flask, jsonify, request
-import json
-import uuid
+from flask import Flask, jsonify, request, send_from_directory
+import os
 import random
 
 app = Flask(__name__)
 
-# Classe pour générer des données météorologiques
+# === Configuration des fichiers statiques ===
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+# === Classes ===
+
 class WeatherData:
     def __init__(self):
         self.temperature = random.randint(10, 30)
@@ -19,77 +22,26 @@ class WeatherData:
             'wind_speed': self.wind_speed
         }
 
-# Classe pour générer un identifiant utilisateur
-class UserID:
-    def __init__(self):
-        self.user_id = str(uuid.uuid4())
+# === Routes Frontend ===
 
-    def to_dict(self):
-        return {
-            'user_id': self.user_id
-        }
+@app.route('/')
+def serve_index():
+    return send_from_directory(BASE_DIR, 'index.html')
 
-# API pour générer des données météorologiques et un identifiant utilisateur
+@app.route('/styles.css')
+def serve_css():
+    return send_from_directory(BASE_DIR, 'styles.css')
+
+@app.route('/script.js')
+def serve_js():
+    return send_from_directory(BASE_DIR, 'script.js')
+
+# === Routes API ===
+
 @app.route('/weather', methods=['GET'])
 def get_weather_data():
     weather_data = WeatherData()
-    user_id = UserID()
-    data = {**weather_data.to_dict(), **user_id.to_dict()}
-    return jsonify(data)
-
-# API pour générer des données météorologiques par identifiant utilisateur
-@app.route('/weather/<user_id>', methods=['GET'])
-def get_weather_data_by_user_id(user_id):
-    weather_data = WeatherData()
-    data = {**weather_data.to_dict(), 'user_id': user_id}
-    return jsonify(data)
-
-# API pour mettre à jour des données météorologiques par identifiant utilisateur
-@app.route('/weather/<user_id>', methods=['PUT'])
-def update_weather_data(user_id):
-    weather_data = WeatherData()
-    data = {**weather_data.to_dict(), 'user_id': user_id}
-    return jsonify(data)
-
-# API pour supprimer des données météorologiques par identifiant utilisateur
-@app.route('/weather/<user_id>', methods=['DELETE'])
-def delete_weather_data(user_id):
-    return jsonify({'message': 'Données météorologiques supprimées'})
-
-# API pour créer un nouvel utilisateur
-@app.route('/users', methods=['POST'])
-def create_user():
-    user_id = UserID()
-    data = user_id.to_dict()
-    return jsonify(data)
-
-# API pour obtenir la liste des utilisateurs
-@app.route('/users', methods=['GET'])
-def get_users():
-    users = []
-    for _ in range(10):
-        user_id = UserID()
-        users.append(user_id.to_dict())
-    return jsonify(users)
-
-# API pour obtenir les informations d'un utilisateur
-@app.route('/users/<user_id>', methods=['GET'])
-def get_user(user_id):
-    user_id = UserID()
-    data = user_id.to_dict()
-    return jsonify(data)
-
-# API pour mettre à jour les informations d'un utilisateur
-@app.route('/users/<user_id>', methods=['PUT'])
-def update_user(user_id):
-    user_id = UserID()
-    data = user_id.to_dict()
-    return jsonify(data)
-
-# API pour supprimer un utilisateur
-@app.route('/users/<user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    return jsonify({'message': 'Utilisateur supprimé'})
+    return jsonify(weather_data.to_dict())
 
 if __name__ == '__main__':
     app.run(debug=True)
