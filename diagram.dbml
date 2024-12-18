@@ -15,3 +15,6 @@ id int
 city varchar
 Department varchar
 }
+
+Ref : Location_data.id > Climate_data.id
+Ref : Location_data.id > Time_data.id
