@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request, send_from_directory
 import mysql.connector
-from flask import request
 import os
 
 app = Flask(__name__)
@@ -35,7 +34,15 @@ def serve_js():
 # === Routes API ===
 
 @app.route('/weather', methods=['GET'])
-def get_weather_data():
+@app.route('/weather/<city>', methods=['GET'])
+@app.route('/weather/<city>/', methods=['GET'])  # Add this route
+@app.route('/weather/<city>/<day>', methods=['GET'])
+@app.route('/weather/<city>/<day>/', methods=['GET'])  # Add this route
+@app.route('/weather/<city>/<day>/<month>', methods=['GET'])
+@app.route('/weather/<city>/<day>/<month>/', methods=['GET'])  # Add this route
+@app.route('/weather/<city>/<day>/<month>/<year>', methods=['GET'])
+@app.route('/weather/<city>/<day>/<month>/<year>/', methods=['GET'])  # Add this route
+def get_weather_data(city=None, day=None, month=None, year=None):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -56,17 +63,19 @@ def get_weather_data():
     cursor.close()
     conn.close()
 
-    # Check the value of GET['route']
-    route = request.args.get('route')
-
-    if route:
-        route_message = "Route is not empty"
+    if city:
+        route_message = city
+        if day:
+            route_message += f" : {day}"
+            if month:
+                route_message += f"/{month}"
+                if year:
+                    route_message += f"/{year}"
     else:
         route_message = "Route is empty"
 
     response = {
         "weather_data": weather_data,
-        "route": route,
         "route_message": route_message
     }
 
