@@ -35,13 +35,9 @@ def serve_js():
 
 @app.route('/weather', methods=['GET'])
 @app.route('/weather/<city>', methods=['GET'])
-@app.route('/weather/<city>/', methods=['GET'])  # Add this route
 @app.route('/weather/<city>/<day>', methods=['GET'])
-@app.route('/weather/<city>/<day>/', methods=['GET'])  # Add this route
 @app.route('/weather/<city>/<day>/<month>', methods=['GET'])
-@app.route('/weather/<city>/<day>/<month>/', methods=['GET'])  # Add this route
 @app.route('/weather/<city>/<day>/<month>/<year>', methods=['GET'])
-@app.route('/weather/<city>/<day>/<month>/<year>/', methods=['GET'])  # Add this route
 def get_weather_data(city=None, day=None, month=None, year=None):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
