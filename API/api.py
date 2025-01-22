@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, send_from_directory
 import mysql.connector
+from flask import request
 import os
 
 app = Flask(__name__)
@@ -55,7 +56,21 @@ def get_weather_data():
     cursor.close()
     conn.close()
 
-    return jsonify(weather_data)
+    # Check the value of GET['route']
+    route = request.args.get('route')
+
+    if route:
+        route_message = "Route is not empty"
+    else:
+        route_message = "Route is empty"
+
+    response = {
+        "weather_data": weather_data,
+        "route": route,
+        "route_message": route_message
+    }
+
+    return jsonify(response)
 
 if __name__ == '__main__':
     app.run(debug=True)
