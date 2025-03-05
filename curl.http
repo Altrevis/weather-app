@@ -1,0 +1,15 @@
+@baseUrl = http://127.0.0.1:5000/weather/
+
+POST {{baseUrl}}location
+content-type: application/json
+
+{
+    "ID": 1,
+    "City": "Montpellier",
+    "Department": "Herault",
+    "Latitude": 43.610000,
+    "Longitude": 3.876667
+}
+
+###
+GET {{baseUrl}}location
