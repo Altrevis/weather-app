@@ -48,11 +48,18 @@ def get_weather_data(city=None, day=None, month=None, year=None):
     FROM Climate c
     JOIN Location l ON c.LocationID = l.ID
     JOIN Time t ON c.TimeID = t.ID
-    ORDER BY t.DateTime DESC, t.HourTime DESC
-    LIMIT 10;
     """
 
-    cursor.execute(query)
+    if city:
+        query += " WHERE l.City LIKE %s OR l.Department LIKE %s"
+
+    query += " ORDER BY t.DateTime DESC, t.HourTime DESC LIMIT 10;"
+
+    if city:
+        cursor.execute(query, (f'%{city}%', f'%{city}%'))
+    else:
+        cursor.execute(query)
+
     weather_data = cursor.fetchall()
 
     # Convertir les objets timedelta en chaînes de caractères
