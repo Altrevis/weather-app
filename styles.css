@@ -40,3 +40,20 @@ pre {
   border: 1px solid #ddd;
   border-radius: 5px;
 }
+#city {
+  width: 50%;
+  height: 30px;
+  margin: 20px auto;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  text-align: center;
+  display: block;
+}
+
+#city:focus {
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
