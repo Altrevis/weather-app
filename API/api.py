@@ -6,12 +6,11 @@ app = Flask(__name__)
 
 # === Configuration de la base de données ===
 db_config = {
-    'host': '10.37.4.104',
+    'host': '10.37.2.104',
     'user': 'ynov_user',
-    'password': 'ynov2024',
+    'password': 'ynov2025',
     'database': 'meteo'
 }
-
 # === Connexion à la base de données ===
 def get_db_connection():
     return mysql.connector.connect(**db_config)
@@ -56,6 +55,14 @@ def get_weather_data(city=None, day=None, month=None, year=None):
     cursor.execute(query)
     weather_data = cursor.fetchall()
 
+    # Convertir les objets timedelta en chaînes de caractères
+    for entry in weather_data:
+        if isinstance(entry.get("HourTime"), (str, bytes)):  # Vérifier si c'est déjà une chaîne
+            continue
+        elif entry.get("HourTime") is not None:
+            entry["HourTime"] = str(entry["HourTime"])  # Convertir timedelta en string
+        
+
     cursor.close()
     conn.close()
 
@@ -76,48 +83,6 @@ def get_weather_data(city=None, day=None, month=None, year=None):
     }
 
     return jsonify(response)
-
-@app.route('/weather/location', methods=['POST'])
-def store_location():
-    data = request.get_json()
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    query = """
-    INSERT INTO Location (ID, City, Department, Latitude, Longitude)
-    VALUES (%s, %s, %s, %s, %s)
-    """
-
-    cursor.execute(query, (
-        data['ID'],
-        data['City'],
-        data['Department'],
-        data['Latitude'],
-        data['Longitude']
-    ))
-
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    return jsonify({"message": "Location stored successfully"})
-
-@app.route('/weather/location', methods=['GET'])
-def get_location():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    query = """
-    SELECT * FROM Location
-    """
-
-    cursor.execute(query)
-    location_data = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-
-    return jsonify({"location_data": location_data})
 
 if __name__ == '__main__':
     app.run(debug=True)
