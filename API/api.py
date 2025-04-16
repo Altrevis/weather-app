@@ -6,14 +6,19 @@ app = Flask(__name__)
 
 # === Configuration de la base de données ===
 db_config = {
-    'host': '10.37.2.104',
+    'host': '10.37.6.155',
     'user': 'ynov_user',
     'password': 'ynov2025',
     'database': 'meteo'
 }
+
 # === Connexion à la base de données ===
 def get_db_connection():
-    return mysql.connector.connect(**db_config)
+    try:
+        return mysql.connector.connect(**db_config)
+    except mysql.connector.Error as e:
+        print(f"Erreur de connexion à la base de données: {e}")
+        raise
 
 # === Routes Frontend ===
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -38,58 +43,80 @@ def serve_js():
 @app.route('/weather/<city>/<day>/<month>', methods=['GET'])
 @app.route('/weather/<city>/<day>/<month>/<year>', methods=['GET'])
 def get_weather_data(city=None, day=None, month=None, year=None):
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    try:
+        # Подключение к базе данных
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
 
-    query = """
-    SELECT c.Temperature, c.Sunshine, c.Humidity, c.WindSpeed, c.WeatherCondition,
-           l.City, l.Department, l.Latitude, l.Longitude,
-           t.HourTime, t.DateTime
-    FROM Climate c
-    JOIN Location l ON c.LocationID = l.ID
-    JOIN Time t ON c.TimeID = t.ID
-    """
+        # Базовый SQL-запрос
+        query = """
+        SELECT `Forecast timestamp`, Position, `Forecast base`,
+               `2 metre temperature`, `Minimum temperature at 2 metres`,
+               `Maximum temperature at 2 metres`, `2 metre relative humidity`,
+               `Total precipitation`, `10m wind speed`,
+               `Surface net solar radiation`, `Surface net thermal radiation`,
+               `Surface solar radiation downwards`, `Surface latent heat flux`,
+               `Surface sensible heat flux`, Commune
+        FROM WeatherData
+        """
 
-    if city:
-        query += " WHERE l.City LIKE %s OR l.Department LIKE %s"
+        # Фильтрация по городу
+        filters = []
+        params = []
+        if city:
+            filters.append("Commune LIKE %s")
+            params.append(f'%{city}%')
 
-    query += " ORDER BY t.DateTime DESC, t.HourTime DESC LIMIT 10;"
+        # Фильтрация по дате
+        if day and month and year:
+            filters.append("DATE(`Forecast timestamp`) = %s")
+            params.append(f"{year}-{month.zfill(2)}-{day.zfill(2)}")
+        elif day and month:
+            filters.append("DATE_FORMAT(`Forecast timestamp`, '%Y-%m') = %s")
+            params.append(f"{year or '2024'}-{month.zfill(2)}")
+        elif day:
+            filters.append("DAY(`Forecast timestamp`) = %s")
+            params.append(day)
 
-    if city:
-        cursor.execute(query, (f'%{city}%', f'%{city}%'))
-    else:
-        cursor.execute(query)
+        # Добавление фильтров к запросу
+        if filters:
+            query += " WHERE " + " AND ".join(filters)
 
-    weather_data = cursor.fetchall()
+        # Сортировка и ограничение
+        query += " ORDER BY `Forecast timestamp` DESC LIMIT 10;"
 
-    # Convertir les objets timedelta en chaînes de caractères
-    for entry in weather_data:
-        if isinstance(entry.get("HourTime"), (str, bytes)):  # Vérifier si c'est déjà une chaîne
-            continue
-        elif entry.get("HourTime") is not None:
-            entry["HourTime"] = str(entry["HourTime"])  # Convertir timedelta en string
-        
+        # Выполнение запроса
+        cursor.execute(query, params)
+        weather_data = cursor.fetchall()
 
-    cursor.close()
-    conn.close()
+        # Преобразование datetime в строку (если необходимо)
+        for entry in weather_data:
+            if entry.get("Forecast timestamp"):
+                entry["Forecast timestamp"] = str(entry["Forecast timestamp"])
 
-    if city:
-        route_message = city
+        # Формирование сообщения о маршруте
+        route_message = city or "Route is empty"
         if day:
             route_message += f" : {day}"
             if month:
                 route_message += f"/{month}"
                 if year:
                     route_message += f"/{year}"
-    else:
-        route_message = "Route is empty"
 
-    response = {
-        "weather_data": weather_data,
-        "route_message": route_message
-    }
+        response = {
+            "weather_data": weather_data,
+            "route_message": route_message
+        }
 
-    return jsonify(response)
+        return jsonify(response)
+
+    except Exception as e:
+        return jsonify({"error": f"Une erreur est survenue: {str(e)}"}), 500
+
+    finally:
+        # Закрытие соединения
+        cursor.close()
+        conn.close()
 
 if __name__ == '__main__':
     app.run(debug=True)
