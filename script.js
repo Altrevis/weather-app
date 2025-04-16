@@ -53,10 +53,14 @@ cityInput.addEventListener('input', function () {
         return response.json();
       })
       .then(data => {
+        const weatherCards = document.getElementById('weatherCards');
+        weatherCards.innerHTML = ''; // Réinitialiser les cartes
+
         if (data.weather_data && data.weather_data.length > 0) {
-          const weather = data.weather_data[0];
-          weatherData.innerHTML = `
-            <div>
+          data.weather_data.forEach(weather => {
+            const card = document.createElement('div');
+            card.className = 'weather-card'; // Appliquer la classe CSS pour le style
+            card.innerHTML = `
               <strong>🌍 Ville :</strong> ${weather.Commune || 'Non spécifié'} <br>
               <strong>📅 Date :</strong> ${new Date(weather['Forecast timestamp']).toLocaleDateString() || 'Non spécifié'} <br>
               <strong>🌡️ Température :</strong> ${weather['2 metre temperature'] || 'Non spécifié'}°C <br>
@@ -65,17 +69,18 @@ cityInput.addEventListener('input', function () {
               <strong>🌬️ Vitesse du vent :</strong> ${weather['10m wind speed'] || 'Non spécifié'} km/h <br>
               <strong>🌞 Rayonnement solaire :</strong> ${weather['Surface solar radiation downwards'] || 'Non spécifié'} W/m² <br>
               <strong>📍 Position :</strong> ${weather.Position || 'Non spécifié'} <br>
-            </div>
-          `;
+            `;
+            weatherCards.appendChild(card);
+          });
         } else {
-          weatherData.innerText = 'Aucune donnée disponible pour cette ville.';
+          weatherCards.innerHTML = '<p>Aucune donnée disponible pour cette ville.</p>';
         }
       })
       .catch(error => {
         console.error('Erreur:', error);
-        weatherData.innerText = 'Erreur lors de la récupération des données.';
+        document.getElementById('weatherCards').innerHTML = '<p>Erreur lors de la récupération des données.</p>';
       });
   } else {
-    weatherData.innerText = '';
+    document.getElementById('weatherCards').innerHTML = '';
   }
 });
