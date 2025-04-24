@@ -6,9 +6,10 @@ app = Flask(__name__)
 
 # === Configuration de la base de données ===
 db_config = {
-    'host': '10.37.6.155',
-    'user': 'ynov_user',
-    'password': 'ynov2025',
+    'host': 'localhost',
+    'user': 'leo',
+    'port': 3307,
+    'password': 'leo',
     'database': 'meteo'
 }
 
@@ -51,12 +52,9 @@ def get_weather_data(city=None, day=None, month=None, year=None):
         # Базовый SQL-запрос
         query = """
         SELECT `Forecast timestamp`, Position, `Forecast base`,
-               `2 metre temperature`, `Minimum temperature at 2 metres`,
-               `Maximum temperature at 2 metres`, `2 metre relative humidity`,
+               `2 metre temperature`, `2 metre relative humidity`,
                `Total precipitation`, `10m wind speed`,
-               `Surface net solar radiation`, `Surface net thermal radiation`,
-               `Surface solar radiation downwards`, `Surface latent heat flux`,
-               `Surface sensible heat flux`, Commune
+               `Surface solar radiation downwards`, Commune
         FROM WeatherData
         """
 

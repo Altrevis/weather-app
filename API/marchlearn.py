@@ -1,40 +1,58 @@
 import pandas as pd
-import os
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
+from datetime import datetime, timedelta
 
-# Chemin vers ton fichier CSV
-file_path = 'data/Longitude_Latitude_Ville.csv'
+# Chemin vers le fichier CSV contenant les données météo
+file_path = 'data/meteo-0025.csv'
 
-# Charger le fichier CSV dans un DataFrame
-data = pd.read_csv(file_path)
+# Charger le fichier CSV dans un DataFrame avec le bon séparateur
+data = pd.read_csv(file_path, sep=',')  # Changez sep=',' si nécessaire
 
-# Afficher un aperçu des données
-print("Aperçu des données :")
-print(data.head())
+# Afficher les colonnes pour vérifier leur format
+print("Colonnes du fichier CSV après chargement :")
+print(data.columns)
 
-# Convertir la colonne DateTime en format datetime
-data['DateTime'] = pd.to_datetime(data['DateTime'])
+# Renommer les colonnes si elles ne correspondent pas aux attentes
+data.columns = ['Position', '2 metre temperature', 'Minimum temperature at 2 metres',
+                'Maximum temperature at 2 metres', 'Commune']
 
-# Gérer les valeurs manquantes (imputation par la moyenne ou suppression)
-data.fillna(data.mean(), inplace=True)
+# Convertir les colonnes nécessaires en type numérique (ignorer '2 metre temperature')
+numerical_features = ['Minimum temperature at 2 metres', 'Maximum temperature at 2 metres']
+for col in numerical_features:
+    data[col] = pd.to_numeric(data[col], errors='coerce')  # Convertir en numérique, remplacer les erreurs par NaN
 
-# Exemple de normalisation (scaling) des données numériques
-scaler = StandardScaler()
-data[['Temperature', 'Humidity', 'WindSpeed', 'Sunshine']] = scaler.fit_transform(data[['Temperature', 'Humidity', 'WindSpeed', 'Sunshine']])
+# Supprimer les lignes avec des valeurs manquantes
+data = data.dropna(subset=numerical_features)
 
-# Vérifier si des colonnes catégorielles existent (ex. City) et les encoder
-data = pd.get_dummies(data, columns=['City'], drop_first=True)
+# Vérifier les données après suppression des valeurs manquantes
+if data.empty:
+    raise ValueError("Les données sont vides après le filtrage. Vérifiez le fichier CSV ou les étapes de nettoyage.")
 
-print("Données après prétraitement :")
-print(data.head())
+print("\nDonnées après suppression des valeurs manquantes :")
+print(data)
+
+# Limiter les données aux 3 dernières lignes
+data = data.tail(3)
+
+# Vérifier si des données existent après le filtrage
+if data.empty:
+    raise ValueError("Les données sont vides après le filtrage. Vérifiez le fichier CSV ou les étapes de nettoyage.")
 
 # Séparer les données en Features (X) et Target (y)
-X = data[['Latitude', 'Longitude', 'Humidity', 'WindSpeed', 'Sunshine'] + [col for col in data.columns if 'City' in col]]
-y = data['Temperature']
+X = data[['Minimum temperature at 2 metres', 'Maximum temperature at 2 metres']]
+y = data['Maximum temperature at 2 metres']  # Utiliser 'Maximum temperature at 2 metres' comme cible
+
+# Vérifier les données avant la normalisation
+print("\nFeatures (X) avant normalisation :")
+print(X)
+
+# Normaliser les données
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
 
 # Séparer les données en ensemble d'entraînement et de test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -54,10 +72,8 @@ print(f'\nErreur quadratique moyenne (MSE) : {mse}')
 print("\nQuelques prédictions:")
 print(y_pred[:5])
 
-# Sauvegarder le modèle pour réutilisation
+# Sauvegarder le modèle et le scaler pour réutilisation
 joblib.dump(model, 'weather_model.pkl')
-
-# Sauvegarder le scaler pour réutilisation
 joblib.dump(scaler, 'scaler.pkl')
 
 # Fonction pour prédire la température avec le modèle enregistré
@@ -67,22 +83,25 @@ def predict_weather(new_data):
     scaler = joblib.load('scaler.pkl')
 
     # Normaliser les nouvelles données
-    new_data_scaled = scaler.transform(new_data[['Humidity', 'WindSpeed', 'Sunshine']])
+    new_data_scaled = scaler.transform(new_data)
 
     # Faire la prédiction
     predicted_temperature = model.predict(new_data_scaled)
-    return predicted_temperature[0]
+    return predicted_temperature
 
-# Exemple d'utilisation pour prédire avec de nouvelles données
-new_data = pd.DataFrame({
-    'Latitude': [48.8566],
-    'Longitude': [2.3522],
-    'Humidity': [55],
-    'WindSpeed': [12],
-    'Sunshine': [80],
-    'City_Lyon': [0],
-    'City_Marseille': [1]  # Adapte en fonction de ton dataset
-})
+# Générer des prédictions pour les 3 prochains jours
+start_date = datetime(2025, 4, 25)  # Date de départ (demain)
+predictions = []
+for i in range(3):
+    date = start_date + timedelta(days=i)
+    new_data = pd.DataFrame({
+        'Minimum temperature at 2 metres': [10 + i],  # Exemple de données
+        'Maximum temperature at 2 metres': [20 + i]  # Exemple de données
+    })
+    predicted_temperature = predict_weather(new_data)
+    predictions.append((date.strftime('%Y-%m-%d'), predicted_temperature[0]))
 
-predicted_temperature = predict_weather(new_data)
-print(f"\nTempérature prédite pour la nouvelle donnée : {predicted_temperature}°C")
+# Afficher les prédictions avec les dates
+print("\nPrédictions pour les 3 prochains jours :")
+for date, temp in predictions:
+    print(f"Date : {date}, Température prédite : {temp:.2f}°C")
