@@ -59,9 +59,10 @@ cityInput.addEventListener('input', function () {
         if (data.weather_data && data.weather_data.length > 0) {
           data.weather_data.forEach(weather => {
             const card = document.createElement('div');
-            card.className = 'weather-card'; // Appliquer la classe CSS pour le style
+            card.className = 'weather-card';
             card.innerHTML = `
-              <strong>🌍 Ville :</strong> ${weather.Commune || 'Non spécifié'} <br>
+              <a href="forecast.html?city=${encodeURIComponent(weather.Commune)}" class="weather-link">
+                <strong>🌍 Ville :</strong> ${weather.Commune || 'Non spécifié'} <br>
               <strong>📅 Date :</strong> ${new Date(weather['Forecast timestamp']).toLocaleDateString() || 'Non spécifié'} <br>
               <strong>🌡️ Température :</strong> ${weather['2 metre temperature'] || 'Non spécifié'}°C <br>
               <strong>💧 Humidité :</strong> ${weather['2 metre relative humidity'] || 'Non spécifié'}% <br>
@@ -69,6 +70,7 @@ cityInput.addEventListener('input', function () {
               <strong>🌬️ Vitesse du vent :</strong> ${weather['10m wind speed'] || 'Non spécifié'} km/h <br>
               <strong>🌞 Rayonnement solaire :</strong> ${weather['Surface solar radiation downwards'] || 'Non spécifié'} W/m² <br>
               <strong>📍 Position :</strong> ${weather.Position || 'Non spécifié'} <br>
+              </a>
             `;
             weatherCards.appendChild(card);
           });

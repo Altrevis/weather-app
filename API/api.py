@@ -1,6 +1,9 @@
 from flask import Flask, jsonify, request, send_from_directory
 import mysql.connector
 import os
+import pandas as pd
+import joblib
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
@@ -21,6 +24,18 @@ def get_db_connection():
         print(f"Erreur de connexion à la base de données: {e}")
         raise
 
+# Charger le modèle et le scaler
+model = joblib.load('weather_model.pkl')
+scaler = joblib.load('scaler.pkl')
+
+# Fonction pour prédire la température
+def predict_weather(new_data):
+    # Normaliser les nouvelles données
+    new_data_scaled = scaler.transform(new_data)
+    # Faire la prédiction
+    predicted_temperature = model.predict(new_data_scaled)
+    return predicted_temperature
+
 # === Routes Frontend ===
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -28,16 +43,23 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 def serve_index():
     return send_from_directory(BASE_DIR, 'index.html')
 
+@app.route('/forecast.html')
+def serve_forecast():
+    return send_from_directory(BASE_DIR, 'forecast.html')
+
 @app.route('/styles.css')
 def serve_css():
     return send_from_directory(BASE_DIR, 'styles.css')
 
 @app.route('/script.js')
-def serve_js():
+def serve_script():
     return send_from_directory(BASE_DIR, 'script.js')
 
-# === Routes API ===
+@app.route('/forecast.js')
+def serve_forecast_script():
+    return send_from_directory(BASE_DIR, 'forecast.js')
 
+# === Routes API ===
 @app.route('/weather', methods=['GET'])
 @app.route('/weather/<city>', methods=['GET'])
 @app.route('/weather/<city>/<day>', methods=['GET'])
@@ -115,6 +137,41 @@ def get_weather_data(city=None, day=None, month=None, year=None):
         # Закрытие соединения
         cursor.close()
         conn.close()
+
+# Route pour obtenir les prévisions météo pour les 3 prochains jours
+@app.route('/weather/<city>', methods=['GET'])
+def get_weather(city):
+    try:
+        print(f"Requête reçue pour la ville : {city}")
+        
+        # Exemple de données d'entrée pour la prédiction
+        start_date = datetime.now() + timedelta(days=1)  # Commence à partir de demain
+        predictions = []
+        for i in range(3):
+            date = start_date + timedelta(days=i)
+            # Exemple de données fictives pour la ville
+            new_data = pd.DataFrame({
+                'Minimum temperature at 2 metres': [10 + i],  # Exemple de données
+                'Maximum temperature at 2 metres': [20 + i]  # Exemple de données
+            })
+            print(f"Préparation des données pour le jour {i + 1}: {new_data}")
+            predicted_temperature = predict_weather(new_data)
+            print(f"Prédiction pour le jour {i + 1}: {predicted_temperature[0]}")
+            predictions.append({
+                "date": date.strftime('%Y-%m-%d'),
+                "temperature": round(predicted_temperature[0], 2)
+            })
+
+        # Retourner les prédictions sous forme de JSON
+        print(f"Prédictions générées : {predictions}")
+        return jsonify({
+            "city": city,
+            "predictions": predictions
+        })
+
+    except Exception as e:
+        print(f"Erreur lors de la génération des prédictions : {e}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

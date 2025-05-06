@@ -35,12 +35,8 @@ if data.empty:
 print("\nDonnées après suppression des valeurs manquantes :")
 print(data)
 
-# Limiter les données aux 3 dernières lignes
-data = data.tail(3)
-
-# Vérifier si des données existent après le filtrage
-if data.empty:
-    raise ValueError("Les données sont vides après le filtrage. Vérifiez le fichier CSV ou les étapes de nettoyage.")
+# Réduire la taille des données pour l'entraînement
+data = data.sample(n=10000, random_state=42)  # Échantillon de 10 000 lignes
 
 # Séparer les données en Features (X) et Target (y)
 X = data[['Minimum temperature at 2 metres', 'Maximum temperature at 2 metres']]
@@ -58,7 +54,7 @@ X = scaler.fit_transform(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Créer et entraîner le modèle
-model = RandomForestRegressor(n_estimators=100, random_state=42)
+model = RandomForestRegressor(n_estimators=20, random_state=42, n_jobs=-1)
 model.fit(X_train, y_train)
 
 # Prédire sur les données de test
