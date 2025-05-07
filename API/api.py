@@ -52,7 +52,7 @@ def serve_css():
     return send_from_directory(BASE_DIR, 'styles.css')
 
 @app.route('/script.js')
-def serve_script():
+def serve_js():
     return send_from_directory(BASE_DIR, 'script.js')
 
 @app.route('/forecast.js')
@@ -60,6 +60,7 @@ def serve_forecast_script():
     return send_from_directory(BASE_DIR, 'forecast.js')
 
 # === Routes API ===
+
 @app.route('/weather', methods=['GET'])
 @app.route('/weather/<city>', methods=['GET'])
 @app.route('/weather/<city>/<day>', methods=['GET'])
@@ -139,8 +140,8 @@ def get_weather_data(city=None, day=None, month=None, year=None):
         conn.close()
 
 # Route pour obtenir les prévisions météo pour les 3 prochains jours
-@app.route('/weather/<city>', methods=['GET'])
-def get_weather(city):
+@app.route('/forecast/<city>', methods=['GET'])
+def get_forecast(city):
     try:
         print(f"Requête reçue pour la ville : {city}")
         
