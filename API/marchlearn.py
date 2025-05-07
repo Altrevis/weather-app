@@ -9,7 +9,7 @@ import os
 print("Chargement des données...")
 # Chemin vers le fichier CSV
 
-file_path = 'data/output_unique_communes.csv'
+file_path = 'data/communes.csv'
 # Charger les données
 data = pd.read_csv(file_path)
 
