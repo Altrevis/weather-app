@@ -1,1 +1,2 @@
 API/meteo.sql filter=lfs diff=lfs merge=lfs -text
+API/*.pkl filter=lfs diff=lfs merge=lfs -text

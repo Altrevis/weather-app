@@ -9,10 +9,9 @@ app = Flask(__name__)
 
 # === Configuration de la base de données ===
 db_config = {
-    'host': 'localhost',
-    'user': 'leo',
-    'port': 3307,
-    'password': 'leo',
+    'host': '10.37.6.155',
+    'user': 'ynov_user',
+    'password': 'ynov2025',
     'database': 'meteo'
 }
 
@@ -144,27 +143,55 @@ def get_weather_data(city=None, day=None, month=None, year=None):
 def get_forecast(city):
     try:
         print(f"Requête reçue pour la ville : {city}")
-        
-        # Exemple de données d'entrée pour la prédiction
-        start_date = datetime.now() + timedelta(days=1)  # Commence à partir de demain
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        query = """
+            SELECT 
+                `2 metre relative humidity`,
+                `Total precipitation`,
+                `10m wind speed`,
+                `Surface solar radiation downwards`,
+                Commune
+            FROM WeatherData
+            WHERE Commune LIKE %s
+            ORDER BY `Forecast timestamp` DESC
+            LIMIT 1
+        """
+        cursor.execute(query, (f"%{city}%",))
+        result = cursor.fetchone()
+
+        if not result:
+            return jsonify({"error": "Aucune donnée disponible pour cette ville"}), 404
+
+        # Préparer les données d'entrée pour le modèle
+        new_data = pd.DataFrame({
+            '2 metre relative humidity': [float(result['2 metre relative humidity'])],
+            'Total precipitation': [float(result['Total precipitation'])],
+            '10m wind speed': [float(result['10m wind speed'])],
+            'Surface solar radiation downwards': [float(result['Surface solar radiation downwards'])],
+            'Commune': [hash(result['Commune']) % 100000]  # Simple encoding
+        })
+
+        start_date = datetime.now() + timedelta(days=1)
         predictions = []
+
         for i in range(3):
             date = start_date + timedelta(days=i)
-            # Exemple de données fictives pour la ville
-            new_data = pd.DataFrame({
-                'Minimum temperature at 2 metres': [10 + i],  # Exemple de données
-                'Maximum temperature at 2 metres': [20 + i]  # Exemple de données
-            })
-            print(f"Préparation des données pour le jour {i + 1}: {new_data}")
-            predicted_temperature = predict_weather(new_data)
-            print(f"Prédiction pour le jour {i + 1}: {predicted_temperature[0]}")
+
+            # Modifier légèrement les données pour chaque jour
+            daily_data = new_data.copy()
+            daily_data['2 metre relative humidity'] *= (1 + i * 0.01)
+            daily_data['Total precipitation'] += i * 0.1
+            daily_data['10m wind speed'] += i * 0.5
+            daily_data['Surface solar radiation downwards'] -= i * 500
+
+            predicted_temperature = predict_weather(daily_data)
             predictions.append({
                 "date": date.strftime('%Y-%m-%d'),
                 "temperature": round(predicted_temperature[0], 2)
             })
 
-        # Retourner les prédictions sous forme de JSON
-        print(f"Prédictions générées : {predictions}")
         return jsonify({
             "city": city,
             "predictions": predictions

@@ -1,38 +1,55 @@
 // forecast.js
 
-// Récupérer les paramètres de l'URL
-const urlParams = new URLSearchParams(window.location.search);
-const city = urlParams.get('city');
+document.addEventListener('DOMContentLoaded', function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const city = urlParams.get('city');
+  const cityNameElement = document.getElementById('cityName');
+  const forecastCards = document.getElementById('forecastCards');
 
-// Afficher le nom de la ville
-document.getElementById('cityName').textContent = city;
+  if (cityNameElement) {
+      cityNameElement.textContent = city;
+  }
 
-// Récupérer les prévisions météo pour les 3 prochains jours
-fetch(`/weather/${city}`)
-  .then(response => {
-    console.log('Réponse brute :', response);
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Données reçues :', data); // Ajoutez ce log
-    const forecastCards = document.getElementById('forecastCards');
-    forecastCards.innerHTML = ''; // Réinitialiser les cartes
+  if (!city) {
+      if (forecastCards) {
+          forecastCards.innerHTML = '<p>Ville non spécifiée.</p>';
+      }
+      return;
+  }
 
-    // Afficher les prédictions retournées par l'API
-    data.predictions.forEach(prediction => {
-      const card = document.createElement('div');
-      card.className = 'weather-card';
-      card.innerHTML = `
-        <strong>📅 Date :</strong> ${prediction.date} <br>
-        <strong>🌡️ Température :</strong> ${prediction.temperature}°C <br>
-      `;
-      forecastCards.appendChild(card);
-    });
-  })
-  .catch(error => {
-    console.error('Erreur lors de la récupération des données :', error);
-    document.getElementById('forecastCards').innerHTML = '<p>Erreur lors de la récupération des données.</p>';
-  });
+  fetch(`/forecast/${city}`)
+      .then(response => {
+          console.log('Réponse brute:', response);
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+      })
+      .then(data => {
+          console.log('Données reçues:', data);
+
+          if (!forecastCards) return;
+
+          forecastCards.innerHTML = '';
+
+          if (data.predictions && Array.isArray(data.predictions)) {
+              data.predictions.forEach(prediction => {
+                  const card = document.createElement('div');
+                  card.className = 'weather-card';
+                  card.innerHTML = `
+                      <strong>📅 Date :</strong> ${prediction.date} <br>
+                      <strong>🌡 Température prévue :</strong> ${prediction.temperature}°C
+                  `;
+                  forecastCards.appendChild(card);
+              });
+          } else {
+              forecastCards.innerHTML = '<p>Aucune prévision disponible.</p>';
+          }
+      })
+      .catch(error => {
+          console.error('Erreur lors de la récupération des données:', error);
+          if (forecastCards) {
+              forecastCards.innerHTML = `<p>Erreur: ${error.message}</p>`;
+          }
+      });
+});
