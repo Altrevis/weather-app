@@ -33,3 +33,16 @@ Ce projet est un site web interactif fournissant des prévisions météo complè
 ##  Weather App Trello
 
 - **lien Trello**: https://trello.com/b/Z9J4CJE4/weather-app
+
+##  Lancement du projet
+
+1. **Changer le compte pour phpmyadmin**
+    ![Logo du projet](./assets/logo.png)
+
+2. **Avoir les données de la machine learning** :
+   ```bash
+   cd weather-app/API || python marchlearn.py
+
+3. **Lancement du site** :
+   ```bash
+   cd weather-app/API || python api.py

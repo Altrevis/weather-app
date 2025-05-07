@@ -9,9 +9,10 @@ app = Flask(__name__)
 
 # === Configuration de la base de données ===
 db_config = {
-    'host': '10.37.6.155',
-    'user': 'ynov_user',
-    'password': 'ynov2025',
+    'host': 'localhost',
+    'user': 'xxx',
+    'port': 3307,
+    'password': 'xxx',
     'database': 'meteo'
 }
 
