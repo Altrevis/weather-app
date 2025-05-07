@@ -39,7 +39,7 @@ Ce projet est un site web interactif fournissant des prévisions météo complè
 ## 🚀 Lancer le projet
 
 1. **Connexion à PhpMyAdmin**  
-   Assurez-vous d’être connecté au bon compte PhpMyAdmin pour accéder à la base de données.  
+   Assurez-vous d’être connecté au bon compte PhpMyAdmin pour accéder à la base de données (fichier api.py).  
    ![Logo du projet](./assets/logo.png)
 
 2. **Générer les données pour le Machine Learning**  
