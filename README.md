@@ -15,16 +15,15 @@ Ce projet est un site web interactif fournissant des prévisions météo complè
 
 ##  Fonctionnalités principales
 
-- **Prévisions sur 15 jours** : Affichage complet de la météo pour les 15 jours à venir.
-- **Santé et environnement** : Données sur la qualité de l'air, niveaux de pollen et pollution.
-- **Données historiques** : Courbes d'évolution de la température et des précipitations pour les dernières 24 heures.
-- **Géolocalisation automatique** : Possibilité d'obtenir les prévisions en fonction de la position actuelle de l'utilisateur, avec option de modification manuelle.
+- **Prévisions sur 3 jours** : Affichage complet de la météo pour les 15 jours à venir.
+- **Géolocalisation** : Affichage de plusieurs ville et commune de France.
+- **Lisible pour tous**: Application utilisable pour les daltonien via l'extention (ColorBlindly)
 
 ---
 
 ##  Ergonomie et design
 
-- **Structuration de l'information** : Les indicateurs principaux (matin, après-midi, soir) sont mis en avant pour une meilleure lisibilité.
+- **Structuration de l'information** : Affichage simplifier et claire des données météo / localisation etc...
 - **Ergonomie de l'interface** : Minimisation des boutons et éléments supplémentaires pour une lecture optimisée.
 - **Interface épurée** : Simplicité et intuitivité centrées sur les informations principales.
 
